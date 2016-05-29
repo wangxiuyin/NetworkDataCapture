@@ -1,1 +1,2 @@
-初始化一个仓库
+Git is a distributed version control system.
+Git is free software.
