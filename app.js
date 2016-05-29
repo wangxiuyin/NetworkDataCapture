@@ -10,9 +10,12 @@ var users = require('./routes/users');
 
 var app = express();
 
-// view engine setup
+// 注册ejs模版为html页，简单的讲，就是原来以.ejs为后缀的模板页，现在的后缀名可以是.html了
+app.engine("html",  require("ejs").__express);
+//设置视图模版默认为html，就是在res.render()跳转页面时可以不用写后缀
+app.set('view engine', 'html');
+//设置模板文件文件夹,__dirname为全局变量,表示网站根目录
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
