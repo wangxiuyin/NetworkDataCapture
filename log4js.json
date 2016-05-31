@@ -9,7 +9,9 @@
         {"type":"console", "category":"console"},
         {"pattern":"debug/yyyyMMddhhmmss.txt", "category":"debug"},
         {"pattern":"info/yyyyMMddhhmmss.txt", "category":"info"},
-        {"pattern":"warn/yyyyMMddhhmmss.txt", "category":"wran"},
+        {"pattern":"warn/yyyyMMddhhmmss.txt", "category":"warn"},
         {"pattern":"error/yyyyMMddhhmmss.txt", "category":"error"}
-    ]
+    ],
+    "replaceConsole":true,
+    "levels":{"debug":"debug","info":"debug", "warn":"debug", "error":"debug"}
 }
