@@ -1,0 +1,15 @@
+{
+    "customerBaseDirectory":"/logs",
+    "customerDefaultAttribute":{
+        "type":"dateFile",
+        "absolute":false,
+        "alwaysIncludePattern":true
+    },
+    "appenders":[
+        {"type":"console", "category":"console"},
+        {"pattern":"debug/yyyyMMddhhmmss.txt", "category":"debug"},
+        {"pattern":"info/yyyyMMddhhmmss.txt", "category":"info"},
+        {"pattern":"warn/yyyyMMddhhmmss.txt", "category":"wran"},
+        {"pattern":"error/yyyyMMddhhmmss.txt", "category":"error"}
+    ]
+}
