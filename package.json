@@ -17,6 +17,7 @@
     "morgan": "~1.6.1",
     "mysql":"2.x",
     "serve-favicon": "~2.3.0",
-    "express-session":"latest"
+    "express-session":"1.11.3",
+    "log4js":"0.6.36"
   }
 }
