@@ -4,8 +4,10 @@ const DATABASENAME = "NodeSample";
  * config 配置
  */
 var config = {
+    rootPath: "NetworkDataCapture",
+    env: "development",
     //mysql 连接字符串配置
-    mysql:{
+    db: {
         host: "localhost",
         port: "3306",
         user: "root",
