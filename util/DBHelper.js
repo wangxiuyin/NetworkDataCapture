@@ -1,23 +1,26 @@
-var config = require("../config");
+'use strict';
+
 var mysql = require("mysql");
+var config = require("../config");
+var log = require("./logger");
 
 var connection;
 //pool断线后在node-mysql内部是移除了连接，在下次访问时会自动再次创建连接
-var pool = mysql.createPool(config.mysql);
+var pool = mysql.createPool(config.db);
 
 /**
  * 连接中断后，自动重连
  */
 exports.handleDisconnect = function handleDisconnect() {
-    connection = mysql.createConnection(config.mysql);
+    connection = mysql.createConnection(config.db);
     connection.connect(function (err) {
         if(err){
             //记录日志
-            console.log("进行断线重连：" + new Date());
+            log.WARN.toString("进行断线重连：" + new Date());
             setTimeout(handleDisconnect, 2000);
             return;
         }
-        console.log("连接成功");  
+        log.INFO.toString("连接成功");  
     });
     connection.on("error", function (err) {
         //记录日志
