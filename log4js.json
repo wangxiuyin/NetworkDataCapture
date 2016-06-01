@@ -7,10 +7,10 @@
     },
     "appenders":[
         {"type":"console", "category":"console"},
-        {"pattern":"debug/yyyy-MM-dd hh:mm:ss.txt", "category":"debug"},
-        {"pattern":"info/yyyy-MM-dd hh:mm:ss.txt", "category":"info"},
-        {"pattern":"warn/yyyy-MM-dd hh:mm:ss.txt", "category":"warn"},
-        {"pattern":"error/yyyy-MM-dd hh:mm:ss.txt", "category":"error"}
+        {"pattern":"debug/yyyy-MM-dd hh:mm:ss.logs", "category":"debug"},
+        {"pattern":"info/yyyy-MM-dd hh:mm:ss.logs", "category":"info"},
+        {"pattern":"warn/yyyy-MM-dd hh:mm:ss.logs", "category":"warn"},
+        {"pattern":"error/yyyy-MM-dd hh:mm:ss.logs", "category":"error"}
     ],
     "replaceConsole":true,
     "levels":{"debug":"ALL","info":"ALL", "warn":"ALL", "error":"ALL"}
