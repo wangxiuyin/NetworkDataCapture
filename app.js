@@ -14,7 +14,7 @@ var app = express();
 app.engine("html",  require("ejs").__express);
 //设置视图模版默认为html，就是在res.render()跳转页面时可以不用写后缀
 app.set('view engine', 'html');
-//设置模板文件文件夹,__dirname为全局变量,表示网站根目录
+//设置模板文件文件夹,__dirname为全局变量,表示当前执行的文件所在目录
 app.set('views', path.join(__dirname, 'views'));
 
 // uncomment after placing your favicon in /public
