@@ -1,90 +1,110 @@
-var logger = {};
-exports.logger = logger;
+'use strict';
+
+function Logger(level) {
+    this.level = level;
+}
 
 var log = require("log4js");
 var fs = require("fs");
 var path = require("path");
+var config = require("../config");
+//获取根目录
+var rootPath = __dirname.substring(0, __dirname.lastIndexOf("/") + 1);
+var env = config.env; //什么模式
+//获取配置文件中的内容
+//var log4jsConfig = fs.readFileSync("../log4js.json", "utf8");
+var log4jsConfig = '{"development":[{"appenders":[{"type":"console", "category":"console"}],"replaceConsole":true,"levels":"ALL"}]}';
+var logConfig;
+if(env === "development"){
+    logConfig = JSON.parse(log4jsConfig).development[0];
+}else{
+    logConfig = JSON.parse(log4jsConfig).production[0];
+    
+    existsOrCreateDirectory(logConfig);
+}
 
-var logConfig = JSON.parse(fs.readFileSync("../log4js.json", "utf8"));
-if(logConfig.appenders){
-    var customerBaseDir = logConfig["customerBaseDirectory"];
-    var customerDefaultAttr = logConfig["customerDefaultAttribute"];
-    for(var i = 0, len = logConfig.appenders.length; i < len; i++){
-        var item = logConfig.appenders[i];
-        if(item["type"] === "console"){
-            continue;
-        }
-        //将customerDefaultAttribute中的对象添加到appenders中除
-        if(customerDefaultAttr != null){
-            for(var attr in customerDefaultAttr){
-                if(item[attr] == null){
-                    item[attr] = customerDefaultAttr[attr];
-                }
-            }
-        }
-        //设置日志文件到根目录下的/logs文件夹下
-        if(customerBaseDir != null){
-            if(item["filename"] == null){
-                item["filename"] == __dirname + customerBaseDir;
-            }else{
-                item["filename"] == __dirname + customerBaseDir + item["filename"];
-            }
-        }
-        var fileName = item["filename"];
-        if(fileName == null) continue;
-        if(item["pertten"] != null){
-            fileName += item["pertten"];
-        }
-        var dir = path.dirname(fileName);
-        directoryExistsOrCreate(dir);
+//将将配置文件加入到log4js中
+log.configure(logConfig);
+/**
+ * 日志输出
+ */
+Logger.prototype.toString = function (message) {
+    var loggerObj;
+    if(env == "development"){
+        loggerObj = log.getLogger("console");
+    }else{
+        loggerObj = log.getLogger(this.level);
+    }
+    switch(this.level){
+        case "debug":
+            loggerObj.debug(message);
+            break;
+        case "info":
+            loggerObj.info(message);
+            break;
+        case "warn":
+            loggerObj.warn(message);
+            break;
+        case "error":
+            loggerObj.error(message);
+            break;
     }
 }
-//以上代码是确保在项目中有log4js.json中配置的文件夹，不然会报错
-log.configure(logConfig);
-var debug = log.getLogger("debug");
-var info = log.getLogger("info");
-var warn = log.getLogger("warn");
-var error = log.getLogger("error");
-logger.debug = function (message) {
-    if(message == null){
-        message = "";
+/**
+ * 产品模式下以文件的方式来保存日志，这里是处理配置文件中所配置的文件路径问题
+ */
+function existsOrCreateDirectory(logConfig) {
+    if(logConfig.appenders){
+        var customerBaseDir = logConfig["customerBaseDirectory"];
+        var customerDefaultAttr = logConfig["customerDefaultAttribute"];
+        for(var i = 0, len = logConfig.appenders.length; i < len; i++){
+            var item = logConfig.appenders[i];
+            if(item["type"] === "console"){
+                continue;
+            }
+            //将customerDefaultAttribute中的对象添加到appenders中除
+            if(customerDefaultAttr != null){
+                for(var attr in customerDefaultAttr){
+                    if(item[attr] == null){
+                        item[attr] = customerDefaultAttr[attr];
+                    }
+                }
+            }
+            //设置日志文件到根目录下的/logs文件夹下
+            if(customerBaseDir != null){
+                if(item["filename"] == null){
+                    item["filename"] = rootPath + customerBaseDir;
+                }else{
+                    item["filename"] = rootPath + customerBaseDir + item["filename"];
+                }
+            }
+            var fileName = item["filename"];
+            if(fileName == null) continue;
+            
+            if(item["pattern"] != null){
+                fileName += item["pattern"];
+            }
+            var dir = path.dirname(fileName);
+            directoryExistsOrCreate(dir);
+        }
     }
-    debug.debug(message);
-};
-logger.info = function(message){
-    if(message == null){
-        message = "";
+}
+/**
+ * 判断目录是否存在，如果不存在则创建
+ */
+function directoryExistsOrCreate(directory){
+    if(!fs.existsSync(directory)){
+        fs.mkdirSync(directory);
     }
-    info.info(message);
-};
-logger.warn = function (message) {
-    if(message == null){
-        message = "";
-    }
-    warn.warn(message);
-};
-logger.error = function(message, exp){
-    if(message == null){
-        message = "";
-    }
-    if(exp != null){
-        message += "\r\n"+exp;
-    }
-    error.error(message);
+}
+
+module.exports = {
+    DEBUG: new Logger("debug"),
+    INFO: new Logger("info"),
+    WARN: new Logger("warn"),
+    ERROR: new Logger("error")
 };
 
 exports.use = function (app) {
-    app.use(log.connectLogger(info, {levels:"debug", format:"method :url"}));
-}
-
-function directoryExistsOrCreate(directory){
-    fs.exists(directory, function (exists) {
-        if(!exists){
-            fs.mkdir(directory, function (err) {
-                if(err){
-                    throw err;
-                }
-            });
-        }
-    });
+    app.use(log.connectLogger(info, {levels:"auto", format:"method :url"}));
 }
