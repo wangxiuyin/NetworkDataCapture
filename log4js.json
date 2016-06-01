@@ -1,17 +1,24 @@
 {
-    "customerBaseDirectory":"/logs",
-    "customerDefaultAttribute":{
-        "type":"dateFile",
-        "absolute":false,
-        "alwaysIncludePattern":true
-    },
-    "appenders":[
-        {"type":"console", "category":"console"},
-        {"pattern":"debug/yyyy-MM-dd hh:mm:ss.logs", "category":"debug"},
-        {"pattern":"info/yyyy-MM-dd hh:mm:ss.logs", "category":"info"},
-        {"pattern":"warn/yyyy-MM-dd hh:mm:ss.logs", "category":"warn"},
-        {"pattern":"error/yyyy-MM-dd hh:mm:ss.logs", "category":"error"}
-    ],
-    "replaceConsole":true,
-    "levels":{"debug":"ALL","info":"ALL", "warn":"ALL", "error":"ALL"}
+    "development":[{
+        "appenders":[{"type":"console", "category":"console"}],
+        "replaceConsole":true,
+        "levels":"ALL"
+    }],
+    "production" : [{
+        "customerBaseDirectory":"logs/",
+        "customerDefaultAttribute":{
+            "type":"dateFile",
+            "absolute":false,
+            "alwaysIncludePattern":true
+        },
+        "appenders":[
+            {"type":"console", "category":"console"},
+            {"pattern":"debug/yyyy-MM-dd hh:mm:ss.logs", "category":"debug"},
+            {"pattern":"info/yyyy-MM-dd hh:mm:ss.logs", "category":"info"},
+            {"pattern":"warn/yyyy-MM-dd hh:mm:ss.logs", "category":"warn"},
+            {"pattern":"error/yyyy-MM-dd hh:mm:ss.logs", "category":"error"}
+        ],
+        "replaceConsole":true,
+        "levels":{"debug":"debug","info":"info", "warn":"warn", "error":"error"}
+    }]
 }
