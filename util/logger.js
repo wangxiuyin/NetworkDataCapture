@@ -12,8 +12,8 @@ var config = require("../config");
 var rootPath = __dirname.substring(0, __dirname.lastIndexOf("/") + 1);
 var env = config.env; //什么模式
 //获取配置文件中的内容
-//var log4jsConfig = fs.readFileSync("../log4js.json", "utf8");
-var log4jsConfig = '{"development":[{"appenders":[{"type":"console", "category":"console"}],"replaceConsole":true,"levels":"ALL"}]}';
+var log4jsConfig = fs.readFileSync("../log4js.json", "utf8");
+//var log4jsConfig = '{"development":[{"appenders":[{"type":"console", "category":"console"}],"replaceConsole":true,"levels":"ALL"}]}';
 var logConfig;
 if(env === "development"){
     logConfig = JSON.parse(log4jsConfig).development[0];
