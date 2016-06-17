@@ -1,6 +1,6 @@
-var logger = require("../util/logger.js").logger;
+var logger = require("../util/logger.js");
 
-logger.debug("this is debug");
-logger.info("this is info");
-logger.warn("this is warn");
-logger.error("this is error");
+logger.DEBUG.toString("this is debug");
+logger.INFO.toString("this is info");
+logger.WARN.toString("this is warn");
+logger.ERROR.toString("this is error");
