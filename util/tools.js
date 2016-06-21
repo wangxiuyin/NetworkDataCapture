@@ -1,24 +1,15 @@
-var exports = {};
+;(function (module) {
+    // module.init = function (name) {
+    //     console.log(name);
+    // };
+    // module.info = function () {
+    //     console.log("test module");
+    // }
+    function Test() {
+    }
+    Test.prototype.getName = function (name) {
+        console.log(name);
+    }
 
-var arr = new Array();
-arr.push("ddd");
-arr.push("test");
-
-exports.arr = arr;
-
-function test() {
-    
-}
-test.prototype.name = "test";
-
-exports.test = test;
-
-exports.name = "ddd";
-
-exports.Test = function () {
-    return new test();
-}
-
-if(typeof module !== "undefined" && module.exports){
-    module.exports = exports;
-}
+    module.t = Test;
+}(exports));
